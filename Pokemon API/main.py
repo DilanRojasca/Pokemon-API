@@ -23,7 +23,7 @@ pokemonList = [
 ]
 
 #endpoint #1
-@app.get("/pokemon/", response_model=Pokemon)
+@app.get("/pokemon/", response_model=list[Pokemon])
 async def get_pokemon():
     return pokemonList
 
@@ -35,8 +35,8 @@ async def get_pokemon_id(id:int):
 
 
 def search_pokemon(id: int):
-        get_pokemon = filter(lambda get_pokemon_id: get_pokemon_id.id == id, pokemonList)
+        pokes = filter(lambda pokemon: pokemon.id == id, pokemonList)
         try:   
-            return list(pokemonList)[0]
+            return list(pokes)[0]
         except:
              raise HTTPException(status_code=404, detail="pokemon not found")
