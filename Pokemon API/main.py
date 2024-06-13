@@ -1,13 +1,12 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-
-app = FastAPI()
+app = FastAPI(openapi_prefix="/pokemon")
 
 class Pokemon(BaseModel):
-    id:int
-    name:str
-    type:str
+    id: int
+    name: str
+    type: str
 
 pokemonList = [
     Pokemon(id=1, name="Bulbasaur", type="Grass"),
@@ -22,21 +21,29 @@ pokemonList = [
     Pokemon(id=10, name="Caterpie", type="Bug")
 ]
 
-#endpoint #1
-@app.get("/pokemon/", response_model=list[Pokemon])
-async def get_pokemon():
+# Endpoint #1
+@app.get("/", response_model=list[Pokemon])
+async def get_pokemonList():
     return pokemonList
 
-#Endpoint #2
-@app.get("/pokemon/{id}")
-async def get_pokemon_id(id:int):
-    return search_pokemon(id)
+# Endpoint #2
+@app.get("/{id}", response_model=Pokemon)
+async def get_pokemon_id(id: int):
+    pokemon = search_pokemon(id)
+    if pokemon is None:
+        raise HTTPException(status_code=404, detail="Pokemon not found")
+    return pokemon
 
-
+# Endpoint #3
+@app.post("/", response_model=Pokemon, status_code=201)
+async def add_pokemon(pokemon: Pokemon):
+    if search_pokemon(pokemon.id) is not None:
+        raise HTTPException(status_code=409, detail="Pokemon already exists")
+    pokemonList.append(pokemon)
+    return pokemon
 
 def search_pokemon(id: int):
-        pokes = filter(lambda pokemon: pokemon.id == id, pokemonList)
-        try:   
-            return list(pokes)[0]
-        except:
-             raise HTTPException(status_code=404, detail="pokemon not found")
+    for poke in pokemonList:
+        if poke.id == id:
+            return poke
+    return None
