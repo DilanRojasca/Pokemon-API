@@ -1,5 +1,6 @@
-from models.pokemon import Pokemon
 import requests
+from fastapi import HTTPException
+from models.models import Pokemon
 
 class PokemonService:
     def __init__(self):
@@ -11,26 +12,37 @@ class PokemonService:
         if response.status_code == 200:
             data = response.json()
             pokemon_list = []
-            for pokemon in data["results"]:
-                pokemon_data = requests.get(pokemon["url"]).json()
-                pokemon_list.append(Pokemon(
-                    id=pokemon_data["id"],
-                    name=pokemon_data["name"],
-                    type=pokemon_data["types"][0]["type"]["name"]
-                ))
+            for pokemon_data in data["results"]:
+                pokemon_url = pokemon_data["url"]
+                pokemon = self.get_pokemon_details(pokemon_url)
+                pokemon_list.append(pokemon)
             return pokemon_list
         else:
-            return []
+            raise HTTPException(status_code=404, detail="No se encontraron Pokémon")
 
-    def get_pokemon_by_id(self, id):
-        url = f"{self.base_url}/{id}"
+    def get_pokemon_details(self, url):
         response = requests.get(url)
         if response.status_code == 200:
             data = response.json()
             return Pokemon(
                 id=data["id"],
                 name=data["name"],
-                type=data["types"][0]["type"]["name"]
+                base_experience=data["base_experience"],
+                height=data["height"],
+                weight=data["weight"],
+                is_default=data["is_default"],
+                order=data["order"],
+                abilities=data["abilities"],
+                types=data["types"],
+                stats=data["stats"],
+                sprites=data["sprites"]
             )
         else:
-            return None
+            raise HTTPException(status_code=404, detail="Pokemon not found")
+
+    def get_pokemon_by_id(self, id):
+        url = f"{self.base_url}/{id}"
+        return self.get_pokemon_details(url)
+
+    def add_new_pokemon(self, pokemon: Pokemon):
+        raise HTTPException(status_code=405, detail="Method not allowed")

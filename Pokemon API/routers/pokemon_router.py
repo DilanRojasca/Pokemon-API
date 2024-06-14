@@ -1,5 +1,5 @@
-from fastapi import APIRouter, HTTPException
-from models.pokemon import Pokemon
+from fastapi import APIRouter
+from models import models
 from services.pokemon_service import PokemonService
 
 router = APIRouter(prefix="/pokemon",
@@ -8,24 +8,18 @@ router = APIRouter(prefix="/pokemon",
 
 pokemon_services = PokemonService()
 
-@router.get("/", response_model=list[Pokemon])
-async def get_pokemonList():
+@router.get("/", summary="Obtener una lista de Pokémon")
+async def get_pokemonList(offset: int = 0, limit:int = 10):
+    pokemon_list = pokemon_services.get_pokemon_list(offset, limit)
     return pokemon_services.get_pokemon_list()
 
-@router.get("/{id}", response_model=Pokemon)
+@router.get("/{id}", summary="obtener un pokemon por medio del ID")
 async def get_pokemon_id(id: int):
     pokemon = pokemon_services.get_pokemon_by_id(id)
-    if pokemon is None:
-        raise HTTPException(status_code=404, detail="Pokemon not found")
     return pokemon
 
 # Endpoint #3
-@router.post("/", response_model=Pokemon, status_code=201)
-async def add_pokemon(pokemon: Pokemon):
-    existing_pokemon = pokemon_services.get_pokemon_by_id(pokemon.id)
-    if existing_pokemon:
-        raise HTTPException(status_code=409, detail="Pokemon already exists")
+@router.post("/", summary="Agregar un nuevo pokemon")
+async def add_pokemon(pokemon: models.Pokemon):
     new_pokemon = pokemon_services.add_new_pokemon(pokemon)
-    if new_pokemon is None:
-        raise HTTPException(status_code=500, detail="Failed to add new Pokemon")
     return new_pokemon
