@@ -11,7 +11,7 @@ pokemon_services = PokemonService()
 @router.get("/", summary="Obtener una lista de Pokémon")
 async def get_pokemonList(offset: int = 0, limit:int = 10):
     pokemon_list = pokemon_services.get_pokemon_list(offset, limit)
-    return pokemon_services.get_pokemon_list()
+    return pokemon_list
 
 @router.get("/{id}", summary="obtener un pokemon por medio del ID")
 async def get_pokemon_id(id: int):
