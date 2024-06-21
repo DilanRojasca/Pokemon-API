@@ -1,36 +1,33 @@
-# Pokémon API
+**Pokémon API**
+================
 
-Esta API proporciona información sobre Pokémon utilizando datos de la PokeAPI.
+This API provides information about Pokémon using data from PokeAPI.
 
-## Instalación
+**Installation**
+---------------
+git clone https://github.com/DilanRojasca/Pokemon-API.git cd Pokemon-API pip install -r requirements.txt uvicorn main:app --reload
 
-1. Clona el repositorio:
+The API will be available at [http://localhost:8000](http://localhost:8000).
 
-   ```sh
-   git clone https://github.com/DilanRojasca/Pokemon-API.git
-Instala las dependencias:
+**Usage**
+-----
 
-sh
+### Documentation
 
-cd Pokemon-API
-pip install -r requirements.txt
-Inicia el servidor:
+API documentation is available at [http://localhost:8000/docs](http://localhost:8000/docs).
 
-sh
-uvicorn main:app --reload
-La API estará disponible en http://localhost:8000.
+### Endpoints
 
-##Uso
-Documentación de la API: http://localhost:8000/docs
-Endpoints:
-/pokemon/{pokemon_id}: Obtiene información detallada sobre un Pokémon específico.
-/pokemon/random: Obtiene información sobre un Pokémon aleatorio.
-/pokemon/types/{type}: Obtiene una lista de Pokémon que pertenecen a un tipo específico.
-Contribuciones
-¡Las contribuciones son bienvenidas! Abre un issue o envía un pull request para contribuir.
+* `/pokemon/{pokemon_id}`: Get detailed information about a specific Pokémon.
+* `/pokemon/random`: Get information about a random Pokémon.
+* `/pokemon/types/{type}`: Get a list of Pokémon that belong to a specific type.
 
-##Licencia
-Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
+**Contributions**
+--------------
 
+Contributions are welcome! Open an issue or send a pull request to contribute.
 
-Este formato simplificado proporciona los pasos de instalación, uso, información sobre endpoints, cómo contribuir y la licencia en un formato más conciso y fácil de copiar y pegar en tu repositorio.
+**License**
+---------
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
