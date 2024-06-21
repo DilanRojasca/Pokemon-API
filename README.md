@@ -7,8 +7,6 @@ This API provides information about Pokémon using data from PokeAPI.
 ---------------
 git clone https://github.com/DilanRojasca/Pokemon-API.git cd Pokemon-API pip install -r requirements.txt uvicorn main:app --reload
 
-The API will be available at [http://localhost:8000](http://localhost:8000).
-
 **Usage**
 -----
 
