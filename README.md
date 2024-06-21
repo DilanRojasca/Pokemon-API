@@ -19,8 +19,7 @@ API documentation is available at [http://localhost:8000/docs](http://localhost:
 ### Endpoints
 
 * `/pokemon/{pokemon_id}`: Get detailed information about a specific Pokémon.
-* `/pokemon/random`: Get information about a random Pokémon.
-* `/pokemon/types/{type}`: Get a list of Pokémon that belong to a specific type.
+* `/pokemon/`: Get information about 10 Pokémon.
 
 **Contributions**
 --------------
